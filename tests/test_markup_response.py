@@ -3,7 +3,7 @@
 import unittest
 import sys
 sys.path.append('..')
-import marker
+from marker import marker
 
 class TestMarkupRespone(unittest.TestCase):
 
@@ -24,32 +24,46 @@ class TestMarkupRespone(unittest.TestCase):
 		Olaf Scholz (SPD) zur Verfügung stellen will. Nun mischt sich 
 		SPD-Parteichefin Andrea Nahles in den Streit ein."""
 
-	def create_markup_request(self, text, lang, type):
+	def create_markup_request(self, text, lang, class_):
 		return {
 			'tokens': text.split(),
 			'inputs': {
 				'lang': lang,
-				'type': type
+				'class': class_
 			}
 		}		
 
-	def test_persons_german(self):
-		
-		markup_request = self.create_markup_request(
-			TestMarkupRespone.text_de, 'German', 'Persons')
-		
-		markup_response = marker.get_markup(markup_request)
-		
-		self.assertTrue(len(markup_response['markup']) > 0) 
+	def test_determine_language_code_en(self):
+		markup_request = self.create_markup_request('lorem', 'English', None)
+		code = marker.determine_language_code(markup_request)
+		self.assertTrue(code == 'en')
 
-	def test_persons_english(self):
-		
+	def test_determine_language_code_de(self):
+		markup_request = self.create_markup_request('lorem', 'German', None)
+		code = marker.determine_language_code(markup_request)
+		self.assertTrue(code == 'de')
+
+	def test_determine_ne_label_en_per(self):
+		markup_request = self.create_markup_request('lorem', None, 'Persons')
+		label = marker.determine_ne_label(markup_request, 'en')
+		self.assertTrue(label == 'PERSON')
+
+	def test_determine_ne_label_de_per(self):
+		markup_request = self.create_markup_request('lorem', None, 'Persons')
+		label = marker.determine_ne_label(markup_request, 'de')
+		self.assertTrue(label == 'PER')
+
+	def test_markup_en_per(self):
 		markup_request = self.create_markup_request(
 			TestMarkupRespone.text_en, 'English', 'Persons')
-		
 		markup_response = marker.get_markup(markup_request)
-
 		self.assertTrue(len(markup_response['markup']) > 0) 
+
+	def test_markup_de_per(self):
+		markup_request = self.create_markup_request(
+			TestMarkupRespone.text_de, 'German', 'Persons')
+		markup_response = marker.get_markup(markup_request)
+		self.assertTrue(len(markup_response['markup']) > 0)
 
 if __name__ == '__main__':
 	unittest.main()
