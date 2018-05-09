@@ -3,5 +3,5 @@
 MARKER_NAME=em-named-entities
 
 cd ~/github/$MARKER_NAME/server
-sudo -u www-data -g www-data pipenv run uwsgi \
+sudo ~/.local/bin/uwsgi \
 	--stop /tmp/$MARKER_NAME.pid
