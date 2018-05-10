@@ -5,8 +5,13 @@ code_map = {
 	'German': 'de'
 }
 
+corpus_map = {
+	'en': 'en_core_web_sm',
+	'de': 'de_core_news_sm'	
+}
+
 label_map = {
-	'en': {
+	'en': { 
 		'Persons': 'PERSON',
 		'Locations': 'LOC',
 		'Organisations': 'ORG'
@@ -44,7 +49,7 @@ def get_markup(markup_request):
 	code = determine_language_code(markup_request)
 	label = determine_ne_label(markup_request, code)
 
-	nlp = spacy.load(code)
+	nlp = spacy.load(corpus_map[code])
 	doc = spacy.tokens.Doc(nlp.vocab, tokens)
 	nlp.entity(doc)
 
@@ -52,7 +57,7 @@ def get_markup(markup_request):
 					for ent in doc.ents if ent.label_ == label ]
 
 	report = "<div>%d matches for <i>%s</i></div>" % (
-		len(markup), 
+		len(markup),
 		markup_request['inputs']['class']
 	)
 
