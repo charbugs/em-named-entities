@@ -40,7 +40,9 @@ def get_setup():
 				'values': ['Persons', 'Locations', 'Organisations'],
 				'label': 'Named Entity Class'
 			}
-		]
+		],
+        'supportedLanguages': 'English, German',
+        'homepage': 'https://github.com/charbugs/em-named-entities'
 	}
 
 def get_markup(markup_request):
