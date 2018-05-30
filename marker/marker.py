@@ -25,7 +25,7 @@ label_map = {
 
 def get_setup():
 	return {
-		'title': 'Search for Persons, Locations and Organisations',
+		'title': 'Persons, Locations and Organisations',
 		'description': 'Highlights names of persons, locations or organisations.',
 		'inputs': [
 			{ 
